@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#160d20" />
+  <title>写给你的生日惊喜 · 11.19</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ===== 第四页：专属星空 ===== */
+    .page-starry {
+      background: radial-gradient(ellipse at 50% 40%, #1b1a3a 0%, #0e0b1e 65%, #070510 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      isolation: isolate;
+    }
+    /* 星云背景层 */
+    .starry-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .starry-bg::before {
+      content: "";
+      position: absolute;
+      width: 160%;
+      height: 160%;
+      left: -30%;
+      top: -30%;
+      background:
+        radial-gradient(ellipse 40% 30% at 25% 30%, rgba(124, 92, 191, .28) 0%, transparent 60%),
+        radial-gradient(ellipse 35% 28% at 75% 65%, rgba(91, 70, 168, .24) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 22% at 55% 20%, rgba(168, 120, 200, .16) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 35% at 60% 80%, rgba(70, 50, 140, .22) 0%, transparent 65%);
+      animation: nebulaDrift 26s ease-in-out infinite alternate;
+    }
+    /* 银河光带 */
+    .starry-bg::after {
+      content: "";
+      position: absolute;
+      left: -25%;
+      top: 20%;
+      width: 150%;
+      height: 55%;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        rgba(150, 120, 220, .06) 25%,
+        rgba(190, 160, 240, .12) 48%,
+        rgba(150, 120, 220, .06) 72%,
+        transparent 100%
+      );
+      filter: blur(18px);
+      transform: rotate(-12deg);
+      animation: galaxyDrift 20s ease-in-out infinite alternate;
+    }
+    @keyframes nebulaDrift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-2%, 1.5%) scale(1.04); }
+    }
+    @keyframes galaxyDrift {
+      0% { transform: rotate(-12deg) translateX(0); }
+      100% { transform: rotate(-10deg) translateX(3%); }
+    }
+    /* 远景小星星层（CSS 静态装饰） */
+    .starry-dust {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .starry-dust span {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: .25;
+      animation: dustTwinkle 3.5s ease-in-out infinite;
+    }
+    .starry-dust span:nth-child(1) { top: 8%; left: 12%; animation-delay: 0s; }
+    .starry-dust span:nth-child(2) { top: 15%; left: 28%; animation-delay: .6s; opacity: .35; }
+    .starry-dust span:nth-child(3) { top: 6%; left: 45%; animation-delay: 1.2s; }
+    .starry-dust span:nth-child(4) { top: 20%; left: 62%; animation-delay: 1.8s; opacity: .3; }
+    .starry-dust span:nth-child(5) { top: 12%; left: 80%; animation-delay: .9s; }
+    .starry-dust span:nth-child(6) { top: 35%; left: 8%; animation-delay: 2.1s; opacity: .28; }
+    .starry-dust span:nth-child(7) { top: 42%; left: 90%; animation-delay: 1.5s; }
+    .starry-dust span:nth-child(8) { top: 55%; left: 18%; animation-delay: .3s; opacity: .32; }
+    .starry-dust span:nth-child(9) { top: 68%; left: 72%; animation-delay: 2.4s; }
+    .starry-dust span:nth-child(10) { top: 78%; left: 35%; animation-delay: 1.1s; opacity: .26; }
+    .starry-dust span:nth-child(11) { top: 85%; left: 60%; animation-delay: 1.7s; }
+    .starry-dust span:nth-child(12) { top: 90%; left: 85%; animation-delay: .4s; opacity: .3; }
+    .starry-dust span:nth-child(13) { top: 72%; left: 5%; animation-delay: 2.2s; }
+    .starry-dust span:nth-child(14) { top: 48%; left: 52%; animation-delay: .8s; opacity: .22; }
+    .starry-dust span:nth-child(15) { top: 25%; left: 95%; animation-delay: 1.9s; }
+    .starry-dust span:nth-child(16) { top: 60%; left: 40%; animation-delay: 2.6s; opacity: .27; }
+    @keyframes dustTwinkle {
+      0%, 100% { opacity: .15; transform: scale(.8); }
+      50% { opacity: .45; transform: scale(1.3); }
+    }
+    .starry-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: pointer;
+    }
+    .starry-copy {
+      position: relative;
+      z-index: 3;
+      padding: 30px 20px;
+      pointer-events: none;
+    }
+    .starry-copy .eyebrow {
+      color: #b9a8e0;
+      letter-spacing: 4px;
+    }
+    .starry-copy h2 {
+      font-family: 'Ma Shan Zheng', serif;
+      font-size: clamp(34px, 6vw, 56px);
+      font-weight: 400;
+      letter-spacing: 5px;
+      color: #f0e6ff;
+      text-shadow: 0 0 28px #b48cff88, 0 0 60px #7a5cbf44;
+      margin: 10px 0 6px;
+    }
+    .starry-copy .star-line {
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: #cbb8e8;
+      margin: 6px 0 24px;
+    }
+    .starry-copy .star-tip {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #9a86b8;
+      animation: tipPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes tipPulse {
+      0%, 100% { opacity: .55; }
+      50% { opacity: 1; }
+    }
+    /* 星星点击后弹出的祝福气泡 */
+    .star-blessing {
+      position: fixed;
+      z-index: 20;
+      max-width: 230px;
+      padding: 10px 16px;
+      border-radius: 14px 14px 14px 2px;
+      background: rgba(40, 26, 60, .88);
+      border: 1px solid #b48cff66;
+      color: #f3eaff;
+      font-size: 12px;
+      line-height: 1.8;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 30px #00000066, 0 0 24px #a77bff33;
+      backdrop-filter: blur(6px);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(6px) scale(.96);
+      transition: opacity .4s ease, transform .4s ease;
+    }
+    .star-blessing.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .star-blessing::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      bottom: -7px;
+      width: 12px;
+      height: 12px;
+      background: inherit;
+      border-right: 1px solid #b48cff66;
+      border-bottom: 1px solid #b48cff66;
+      transform: rotate(45deg);
+      border-radius: 0 0 3px 0;
+    }
+    .page-starry .page-number {
+      color: #b9a8e0;
+      z-index: 3;
+    }
+    .page-starry .nav-btn {
+      color: #d9c8f5;
+      border-color: #b48cff66;
+      z-index: 3;
+      background: #ffffff0a;
+    }
+    .page-starry .nav-btn:hover {
+      background: #b48cff22;
+      border-color: #d9c8f5;
+    }
+    .page-starry .restart-btn {
+      right: 22px;
+    }
+    @media (max-width: 600px) {
+      .starry-copy h2 { letter-spacing: 3px; }
+      .starry-copy .star-line { font-size: 11px; letter-spacing: 2px; }
+      .star-blessing { max-width: 190px; font-size: 11px; padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="pinkboard" aria-hidden="true"></canvas>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="grain"></div>
+  <main class="book-wrap">
+    <div class="topline"><span>✦ A LITTLE SURPRISE FOR YOU ✦</span><span class="date-small">NOVEMBER 19</span></div>
+    <section class="book" id="book" aria-live="polite">
+      <article class="page page-cover active" data-page="0">
+        <div class="cover-frame">
+          <span class="tiny-star star-a">✧</span><span class="tiny-star star-b">✦</span><span class="tiny-star star-c">✧</span>
+          <div class="eyebrow">TODAY IS ALL ABOUT YOU</div>
+          <div class="cover-heart">♡</div>
+          <p class="cover-kicker">把所有温柔与浪漫</p>
+          <h1>生日快乐</h1>
+          <p class="cover-sub">愿你被爱、被珍藏，永远闪闪发光</p>
+          <div class="cover-date"><span>11</span><i></i><span>19</span><small>NOVEMBER</small></div>
+          <button class="open-btn next-btn" type="button">开启你的生日惊喜 <span>→</span></button>
+          <div class="bottom-note">FOR THE MOST SPECIAL GIRL <span>♥</span></div>
+        </div>
+      </article>
+
+      <article class="page page-fireworks" data-page="1" aria-hidden="true">
+        <div class="page-deco">✧　✦　✧</div>
+        <div class="firework-copy">
+          <div class="eyebrow">MAKE A WISH</div>
+          <p class="wish-line">今晚的星星与烟花</p>
+          <h2>都为你而闪耀</h2>
+          <p class="wish-desc">愿新一岁的你，眼里有光，心中有爱，<br>所有美好都如约而至。</p>
+          <div class="sparkle-divider"><span>✦</span></div>
+          <p class="wish-sign">今天，你是全世界最耀眼的主角。</p>
+        </div>
+        <div class="page-number">02 <span>/</span> 04</div>
+        <button class="nav-btn prev-btn" type="button">← 上一页</button>
+        <button class="nav-btn next-btn" type="button">继续翻页 →</button>
+      </article>
+
+      <article class="page page-letter" data-page="2" aria-hidden="true">
+        <div class="letter-inner">
+          <div class="eyebrow">A LETTER FROM MY HEART</div>
+          <div class="letter-flower">❀</div>
+          <h2>mxx生日快乐！</h2>
+          <div class="letter-rule"><span>♡</span></div>
+          <div class="letter-text" id="letterText">
+            <p>希望在以后的日子里，愿你天黑有灯，下雨有伞。</p>
+            <p>新的一岁，希望你每天都有好心情，想做的事都能实现，走过的每一段路都有惊喜相伴。</p>
+            <p>愿你永远自由、勇敢、快乐，累了有依靠，开心有人分享。也希望往后的日子里，我能继续陪你看日落、看星星，把平凡的日子过成浪漫的故事。</p>
+            <p class="last-line">不止生日快乐，愿你岁岁年年，都胜意。<span>♥</span></p>
+          </div>
+          <div class="signature">永远在的zzl</div>
+          <button class="final-heart" id="heartSurprise" type="button" aria-label="点击爱心，收下漫天爱心">
+            <span class="heart-icon">♥</span>
+            <span class="heart-hint">点一点这颗心，收下我的爱</span>
+          </button>
+          <div class="letter-bottom">WITH ALL MY LOVE · 11.19</div>
+        </div>
+        <div class="page-number">03 <span>/</span> 04</div>
+        <button class="nav-btn prev-btn" type="button">← 上一页</button>
+        <button class="nav-btn next-btn" type="button">继续翻页 →</button>
+      </article>
+
+      <!-- ===== 第四页：专属星空 ===== -->
+      <article class="page page-starry" data-page="3" aria-hidden="true">
+        <!-- 星云/银河背景 -->
+        <div class="starry-bg"></div>
+        <!-- 远景静态星尘 -->
+        <div class="starry-dust">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <!-- 可交互的动态星星 -->
+        <canvas class="starry-canvas" id="starryCanvas"></canvas>
+        <div class="starry-copy">
+          <div class="eyebrow">A SKY FULL OF WISHES</div>
+          <h2>你的专属星空</h2>
+          <p class="star-line">每一颗星星，都是一句写给你的祝福</p>
+          <p class="star-tip">✦ 轻点星星，收下它 ✦</p>
+        </div>
+        <div class="page-number">04 <span>/</span> 04</div>
+        <button class="nav-btn prev-btn" type="button">← 上一页</button>
+        <button class="nav-btn restart-btn" type="button">再看一次 ↻</button>
+      </article>
+    </section>
+    <div class="book-controls">
+      <span class="control-hint">用按钮翻页，开启这份小小心意</span>
+      <div class="dots">
+        <button class="dot current" data-to="0" aria-label="第1页"></button>
+        <button class="dot" data-to="1" aria-label="第2页"></button>
+        <button class="dot" data-to="2" aria-label="第3页"></button>
+        <button class="dot" data-to="3" aria-label="第4页"></button>
+      </div>
+    </div>
+    <footer>MADE WITH LOVE <span>♥</span> JUST FOR YOU</footer>
+  </main>
+  <canvas id="fireworks" aria-hidden="true"></canvas>
+
+  <!-- 星星祝福气泡 -->
+  <div class="star-blessing" id="starBlessing"></div>
+
+  <script src="main.js"></script>
+  <script>
+  // ===== 第四页专属星空 =====
+  (() => {
+    const page = document.querySelector('.page-starry');
+    if (!page) return;
+    const canvas = document.getElementById('starryCanvas');
+    const ctx = canvas.getContext('2d');
+    const blessingEl = document.getElementById('starBlessing');
+
+    // 祝福语库
+    const blessings = [
+      '愿你眼里有星辰，心中有山海。',
+      '愿新的一岁，被世界温柔以待。',
+      '愿你想要的都拥有，得不到的都释怀。',
+      '愿你笑容常在，烦恼不再。',
+      '愿你成为自己的太阳，无需凭借谁的光。',
+      '愿你岁岁欢愉，万事胜意。',
+      '愿你自由且浪漫，勇敢且温暖。',
+      '愿你夜夜好梦，日日欢喜。',
+      '愿你一生被爱，一生可爱。',
+      '愿你所有的小愿望，都能悄悄实现。',
+      '愿你遇见的人，都温柔如初。',
+      '愿你前行的路，都铺满星光。',
+      '愿你被偏爱，被珍惜，被坚定选择。',
+      '愿你每天都像今天一样闪闪发光。',
+      '愿你的世界，永远有光，永远有爱。',
+      '愿你眉眼如初，岁月如故。',
+      '愿你拥有星辰大海，也拥有烟火人间。',
+      '愿你温柔不变，情深不伤。',
+      '愿你往后余生，皆是坦途。',
+      '愿你心中有光，无惧风雨。',
+      '愿你所遇皆良人，所行皆坦途。',
+      '愿你所有的坚持，都值得被看见。',
+      '愿你不再孤单，因为有我。',
+      '愿你笑里全是坦荡，眼里全是阳光。',
+      '愿你被这个世界，温柔地爱着。',
+    ];
+
+    let W = 0, H = 0, DPR = 1;
+    let stars = [];
+    let blessTimer = 0;
+    let animId = 0;
+    let isActive = false;
+
+    const STAR_COUNT = 38;
+    const TAP_RADIUS = 30;
+
+    function resizeCanvas() {
+      const rect = page.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = rect.width;
+      H = rect.height;
+      canvas.width = W * DPR;
+      canvas.height = H * DPR;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      createStars();
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: 1.2 + Math.random() * 2.6,
+          speedX: (Math.random() - 0.5) * 0.06,
+          speedY: (Math.random() - 0.5) * 0.04,
+          twinklePhase: Math.random() * Math.PI * 2,
+          twinkleSpeed: 0.6 + Math.random() * 1.4,
+          color: pickStarColor(),
+          glow: 6 + Math.random() * 18,
+          blessing: blessings[Math.floor(Math.random() * blessings.length)],
+        });
+      }
+    }
+
+    function pickStarColor() {
+      const colors = ['#ffffff', '#ffe9c7', '#d9c8ff', '#c7e3ff', '#ffd6e7', '#e8d6ff', '#fff4d6'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function drawStars(now) {
+      ctx.clearRect(0, 0, W, H);
+
+      stars.forEach((s) => {
+        s.x += s.speedX;
+        s.y += s.speedY;
+        if (s.x < -20) s.x = W + 20;
+        if (s.x > W + 20) s.x = -20;
+        if (s.y < -20) s.y = H + 20;
+        if (s.y > H + 20) s.y = -20;
+
+        s.twinklePhase += 0.016 * s.twinkleSpeed;
+        const twinkle = 0.6 + 0.4 * Math.sin(s.twinklePhase);
+
+        const glowR = s.r * 4;
+        const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glowR);
+        grd.addColorStop(0, s.color + 'cc');
+        grd.addColorStop(1, 'transparent');
+        ctx.globalAlpha = 0.35 * twinkle;
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, glowR, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.globalAlpha = 0.85 * twinkle;
+        ctx.fillStyle = s.color;
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = s.glow * twinkle;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.globalAlpha = 0.5 * twinkle;
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = 0.7;
+        ctx.shadowBlur = 0;
+        const armLen = s.r * 2.8;
+        ctx.beginPath();
+        ctx.moveTo(s.x - armLen, s.y);
+        ctx.lineTo(s.x + armLen, s.y);
+        ctx.moveTo(s.x, s.y - armLen);
+        ctx.lineTo(s.x, s.y + armLen);
+        ctx.stroke();
+      });
+
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+
+      if (isActive) {
+        animId = requestAnimationFrame(drawStars);
+      }
+    }
+
+    function startAnimation() {
+      if (isActive) return;
+      isActive = true;
+      animId = requestAnimationFrame(drawStars);
+    }
+
+    function stopAnimation() {
+      isActive = false;
+      if (animId) cancelAnimationFrame(animId);
+      animId = 0;
+    }
+
+    function handleClick(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = W / rect.width;
+      const scaleY = H / rect.height;
+      const clickX = (e.clientX - rect.left) * scaleX;
+      const clickY = (e.clientY - rect.top) * scaleY;
+
+      let closest = null;
+      let closestDist = Infinity;
+      for (const s of stars) {
+        const dx = s.x - clickX;
+        const dy = s.y - clickY;
+        const dist = Math.hypot(dx, dy);
+        if (dist < TAP_RADIUS && dist < closestDist) {
+          closest = s;
+          closestDist = dist;
+        }
+      }
+
+      if (!closest) return;
+
+      showBlessing(closest);
+
+      closest.twinklePhase += Math.PI;
+      closest.r = Math.min(closest.r * 1.25, 5);
+      setTimeout(() => {
+        closest.r = Math.max(closest.r / 1.25, 1.2);
+      }, 320);
+    }
+
+    function showBlessing(star) {
+      clearTimeout(blessTimer);
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = rect.width / W;
+      const scaleY = rect.height / H;
+      const pageLeft = rect.left + star.x * scaleX;
+      const pageTop = rect.top + star.y * scaleY;
+
+      const bw = 230;
+      let left = pageLeft - bw / 2;
+      left = Math.max(12, Math.min(left, window.innerWidth - bw - 12));
+      let top = pageTop - 12;
+      const bubbleHeight = 70;
+      if (top - bubbleHeight < 10) {
+        top = pageTop + 24;
+        blessingEl.style.transformOrigin = 'top left';
+      } else {
+        blessingEl.style.transformOrigin = 'bottom left';
+      }
+
+      blessingEl.textContent = star.blessing;
+      blessingEl.style.left = left + 'px';
+      blessingEl.style.top = top + 'px';
+      blessingEl.style.bottom = 'auto';
+      blessingEl.classList.add('show');
+
+      blessTimer = setTimeout(() => {
+        blessingEl.classList.remove('show');
+      }, 3200);
+    }
+
+    const observer = new MutationObserver(() => {
+      const active = page.classList.contains('active');
+      if (active) {
+        resizeCanvas();
+        startAnimation();
+      } else {
+        stopAnimation();
+        blessingEl.classList.remove('show');
+        clearTimeout(blessTimer);
+      }
+    });
+    observer.observe(page, { attributes: true, attributeFilter: ['class'] });
+
+    canvas.addEventListener('click', handleClick);
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        handleClick({ clientX: touch.clientX, clientY: touch.clientY });
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      if (page.classList.contains('active')) {
+        resizeCanvas();
+      }
+    });
+
+    if (page.classList.contains('active')) {
+      resizeCanvas();
+      startAnimation();
+    }
+  })();
+  </script>
+</body>
+</html>
